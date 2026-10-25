@@ -1,8 +1,9 @@
-Lightweight Haskell wrapper to support writing in Hiragana.
+# hira.gana
+Lightweight Haskell wrapper to support writing in Hiragana. Input must be `.gana`, use `cabal run hira -- script.gana` to compile.
 
 See script.gana for an example script.
 
-# TODOs
+## TODOs
 - execute translated script
 - add ligatures, e.g. such that `su` can be written as `す` instead of `さう` (sa-u)
 - add more natural "bridging letters". now, (almost) everything defaults to `-a`, e.g. `import` -> `i-ma-pa-o-ra-ta`, whereas `i-mo-po-ru-to` sounds more natural
