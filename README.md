@@ -1,5 +1,5 @@
 # hira.gana
-Lightweight Haskell wrapper to support writing in Hiragana. Input must be `.gana`, use `cabal run hira -- script.gana` to compile.
+Lightweight Haskell wrapper to support writing in Hiragana. Input must be `.gana`, use `cabal run hira -- script.gana` to compile, or add the release to path and use `hira script.gana` to run, or `hira build script.gana` to compile.
 
 See script.gana for an example script.
 
@@ -8,7 +8,7 @@ See script.gana for an example script.
 - add ligatures, e.g. such that `su` can be written as `す` instead of `さう` (sa-u)
 - add more natural "bridging letters". now, (almost) everything defaults to `-a`, e.g. `import` -> `i-ma-pa-o-ra-ta`, whereas `i-mo-po-ru-to` sounds more natural
 - add escape character
-- add actual hiragana modes `ひら　びるど` and `ひら　すくりぷと`. now we just use `ba-u-i-ri-da` and `ra-u-na`
+- add actual hiragana modes `ひら` and `ひら　びるど`
 - add auto-translate functions (configure translations somewhere, don't manually define the mapping)
 
 
