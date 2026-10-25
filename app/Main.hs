@@ -13,9 +13,13 @@ main = do
             putStrLn "Compile: hira build <file.gana> --　こんぱいる: ひら　びるど <ふぁいる.がな>"
             putStrLn "Run: hira run <file.gana> --　すくりぷと: ひら　すくりぷと <ふぁいる.がな>"
         else do
-            src <- readFile (head args)
-            let lns = lines src
-            mapM_ (putStrLn . parse) lns
+            case mode of
+                "build" -> do
+                    src <- readFile script
+                    let lns = lines src
+                    mapM_ (putStrLn . parse) lns
+                "run" -> error "not implemented yet"
+                _ -> error "unknown mode"
 
 modes :: [String]
 modes = let ms = ["build","run"]
