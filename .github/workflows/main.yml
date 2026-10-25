@@ -1,0 +1,61 @@
+name: Build and publish release
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+env:
+  EXE_NAME: hira
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up GHC and cabal
+        uses: haskell-actions/setup@v2
+        with:
+          ghc-version: '9.6'
+          cabal-version: 'latest'
+
+      - name: Cache cabal packages and build output
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cabal/packages
+            ~/.cabal/store
+            dist-newstyle
+          key: ${{ runner.os }}-cabal-${{ hashFiles('**/*.cabal', '**/cabal.project*') }}
+          restore-keys: |
+            ${{ runner.os }}-cabal-
+
+      - name: Update package index
+        run: cabal update
+
+      - name: Build
+        run: cabal build exe:$EXE_NAME
+
+      - name: Package executable
+        run: |
+          mkdir dist
+          cp "$(cabal list-bin exe:$EXE_NAME)" "dist/$EXE_NAME"
+          strip "dist/$EXE_NAME"
+          # tar.gz preserves the executable bit, so users can run it right away
+          tar -czf "$EXE_NAME-linux-x86_64.tar.gz" -C dist "$EXE_NAME"
+
+      - name: Publish to the "latest" release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Replace the previous "latest" release so the tag points at this commit
+          gh release delete latest --cleanup-tag --yes || true
+          gh release create latest "$EXE_NAME-linux-x86_64.tar.gz" \
+            --target "$GITHUB_SHA" \
+            --title "Latest build" \
+            --notes "Automated build of commit $GITHUB_SHA"

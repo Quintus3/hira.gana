@@ -6,13 +6,19 @@ import Data.List
 main :: IO ()
 main = do
     args <- getArgs
-    if length args /= 1 || not (".gana" `isSuffixOf` head args)
+    let mode = head args
+        script = args !! 2
+    if length args < 2 || not (".gana" `isSuffixOf` script) || notElem "mode" modes
         then do
-            putStrLn "Usage: hira <file.gana> --　しようほうほう: ひら <ふぁいる.がな>"
+            putStrLn "Compile: hira build <file.gana> --　こんぱいる: ひら　びるど <ふぁいる.がな>"
+            putStrLn "Run: hira run <file.gana> --　すくりぷと: ひら　すくりぷと <ふぁいる.がな>"
         else do
             src <- readFile (head args)
             let lns = lines src
             mapM_ (putStrLn . parse) lns
+
+modes :: [String]
+modes = ["build","run"]
 
 parse :: String -> String
 parse ('￥':'￥':c:cs) = '￥' : parseChar c : parse cs
