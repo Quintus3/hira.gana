@@ -8,7 +8,7 @@ main = do
     args <- getArgs
     let build = head args == "build"
         script = if build then args !! 1 else head args
-    if length args < 2 || not (".gana" `isSuffixOf` script)
+    if not (".gana" `isSuffixOf` script)
         then do
             putStrLn "Compile: hira build <file.gana> --　こんぱいる: ひら　びるど <ふぁいる.がな>"
             putStrLn "Run: hira <file.gana> --　すくりぷと: ひら <ふぁいる.がな>"
