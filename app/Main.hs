@@ -7,7 +7,7 @@ main :: IO ()
 main = do
     args <- getArgs
     let mode = head args
-        script = args !! 2
+        script = args !! 1
     if length args < 2 || not (".gana" `isSuffixOf` script) || notElem mode modes
         then do
             putStrLn "Compile: hira build <file.gana> --　こんぱいる: ひら　びるど <ふぁいる.がな>"
