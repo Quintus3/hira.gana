@@ -7,6 +7,9 @@ See script.gana for an example script.
 - execute translated script
 - add ligatures, e.g. such that `su` can be written as `す` instead of `さう` (sa-u)
 - add more natural "bridging letters". now, (almost) everything defaults to `-a`, e.g. `import` -> `i-ma-pa-o-ra-ta`, whereas `i-mo-po-ru-to` sounds more natural
+- add escape character
+- add actual hiragana modes `ひら　びるど` and `ひら　すくりぷと`. now we just use `ba-u-i-ri-da` and `ra-u-na`
+- add auto-translate functions (configure translations somewhere, don't manually define the mapping)
 
 
 # Translation

@@ -1,6 +1,6 @@
 module Main where
 import System.Environment (getArgs)
-import Data.Char (toUpper)
+import Data.Char
 import Data.List
 
 main :: IO ()
@@ -8,7 +8,7 @@ main = do
     args <- getArgs
     let mode = head args
         script = args !! 2
-    if length args < 2 || not (".gana" `isSuffixOf` script) || notElem "mode" modes
+    if length args < 2 || not (".gana" `isSuffixOf` script) || notElem mode modes
         then do
             putStrLn "Compile: hira build <file.gana> --　こんぱいる: ひら　びるど <ふぁいる.がな>"
             putStrLn "Run: hira run <file.gana> --　すくりぷと: ひら　すくりぷと <ふぁいる.がな>"
@@ -18,14 +18,61 @@ main = do
             mapM_ (putStrLn . parse) lns
 
 modes :: [String]
-modes = ["build","run"]
+modes = let ms = ["build","run"]
+        in ms ++ map parse' ms
 
+-- EN -> JP
+parse' :: String -> String
+parse' (c:cs) | isUpper c = '￥' : parseChar' c : parse' cs
+              | otherwise = parseChar' c : parse' cs
+parse' [] = []
+
+-- JP -> EN
 parse :: String -> String
-parse ('￥':'￥':c:cs) = '￥' : parseChar c : parse cs
 parse ('￥':c:cs) = toUpper (parseChar c) : parse cs
 parse (c:cs) = parseChar c : parse cs
 parse [] = []
 
+-- EN -> JP
+parseChar' :: Char -> Char
+parseChar' 'a' = 'あ'
+parseChar' 'e' = 'え'
+parseChar' 'i' = 'い'
+parseChar' 'o' = 'お'
+parseChar' 'u' = 'う'
+parseChar' 'h' = 'は'
+parseChar' 'k' = 'か'
+parseChar' 'm' = 'ま'
+parseChar' 'n' = 'な'
+parseChar' 'p' = 'ぱ'
+parseChar' 'r' = 'ら'
+parseChar' 's' = 'さ'
+parseChar' 't' = 'た'
+parseChar' 'w' = 'わ'
+parseChar' 'y' = 'や'
+parseChar' 'b' = 'ば'
+parseChar' 'd' = 'だ'
+parseChar' 'g' = 'が'
+parseChar' 'j' = 'じ'
+parseChar' 'z' = 'ざ'
+parseChar' 'c' = 'し'
+parseChar' 'f' = 'ふ'
+parseChar' 'l' = 'り'
+parseChar' 'q' = 'く'
+parseChar' 'v' = 'ゔ'
+parseChar' 'x' = 'す'
+parseChar' ' ' = '　'
+parseChar' '.' = '。'
+parseChar' '(' = '（'
+parseChar' ')' = '）'
+parseChar' ':' = '：'
+parseChar' '=' = '＝'
+parseChar' '"' = '”'
+parseChar' ',' = '、'
+parseChar' '!' = '！'
+parseChar' x = x
+
+-- JP -> EN
 parseChar :: Char -> Char
 parseChar 'あ' = 'a'
 parseChar 'え' = 'e'
